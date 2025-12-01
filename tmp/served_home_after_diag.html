@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect - Inicio</title>
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/overrides.css">
+    
+    
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>EduConnect
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/">
+                                <i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid main-container">
+        
+        
+
+        
+        <main class="main-content-full">
+           
+            
+
+           
+            
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card card-hero shadow-soft mb-5">
+        <div class="card-body text-center">
+          <h1 class="hero-title">EduConnect</h1>
+          <p class="hero-lead mb-3">Conecta estudiantes y docentes para resolver dudas y medir progreso académico.</p>
+          <div class="d-flex justify-content-center gap-3">
+            <a href="/login/" class="btn btn-primary btn-lg px-4">
+              <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+            </a>
+            <a href="/consulta/crear/" class="btn btn-outline-primary btn-lg px-4">
+              <i class="fas fa-plus me-2"></i>Crear Consulta
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <div class="card feature-card p-4 h-100">
+            <div class="text-center mb-3"><i class="fas fa-question-circle fa-3x"></i></div>
+            <h5 class="fw-bold">Consultas Rápidas</h5>
+            <p class="small-muted">Envía dudas por asignatura y recibe respuestas de docentes.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card p-4 h-100">
+            <div class="text-center mb-3"><i class="fas fa-comments fa-3x"></i></div>
+            <h5 class="fw-bold">Retroalimentación</h5>
+            <p class="small-muted">Evalúa y mejora la calidad de las respuestas.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card p-4 h-100">
+            <div class="text-center mb-3"><i class="fas fa-chart-line fa-3x"></i></div>
+            <h5 class="fw-bold">Seguimiento</h5>
+            <p class="small-muted">Monitorea progreso con estadísticas por asignatura.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card p-4">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h5 class="mb-2">¿Qué puedes hacer?</h5>
+                <p class="small-muted mb-0">Crear consultas, visualizar tu progreso y comunicarte con docentes de manera eficaz.</p>
+              </div>
+              <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a class="btn btn-primary" href="/consulta/crear/"><i class="fas fa-plus me-2"></i>Crear Consulta</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+        </main>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/static/EduConnectApp/js/dashboard.js"></script>
+    
+
+    
+    <script>
+    (function(){
+        function getCookie(name) {
+            const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return v ? v.pop() : '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            const token = getCookie('csrftoken');
+            if (!token) return;
+            document.querySelectorAll('form[method="post"], form[method="POST"]').forEach(form => {
+                if (!form.querySelector('input[name="csrfmiddlewaretoken"]')) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'csrfmiddlewaretoken';
+                    input.value = token;
+                    form.prepend(input);
+                }
+            });
+        });
+    })();
+    </script>
+    <!-- Debug: collect computed styles when ?debug_css=1 and POST to debug endpoint -->
+    <script>
+    (function(){
+        try{
+            const params = new URLSearchParams(location.search);
+            if (!params.get('debug_css')) return;
+            const selectors = ['body','.navbar','.main-container','.main-content-with-sidebar','.card-hero','.hero-title','.hero-lead','.page-title','.small-muted'];
+            const out = { url: location.pathname+location.search, timestamp: Date.now(), computed: {} };
+            selectors.forEach(sel => {
+                const el = document.querySelector(sel);
+                if (!el) return out.computed[sel] = null;
+                const cs = window.getComputedStyle(el);
+                out.computed[sel] = {
+                    color: cs.color,
+                    backgroundColor: cs.backgroundColor,
+                    paddingTop: cs.paddingTop,
+                    marginTop: cs.marginTop,
+                    top: cs.top,
+                    position: cs.position,
+                    display: cs.display,
+                    opacity: cs.opacity
+                };
+            });
+
+            // Send as POST to debug endpoint
+            fetch('/debug/_css_report/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(out)
+            }).then(r=>console.log('debug_css_report sent', r.status)).catch(e=>console.error('debug_css_report failed', e));
+        }catch(e){ console.error('debug_css collection error', e); }
+    })();
+    </script>
+</body>
+</html>

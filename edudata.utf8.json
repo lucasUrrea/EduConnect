@@ -1,0 +1,233 @@
+[
+{
+  "model": "EduConnectApp.asignaturas",
+  "pk": 1,
+  "fields": {
+    "codigo_asignatura": "MAT101",
+    "nombre_asignatura": "Matemßticas I",
+    "descripcion": null,
+    "creditos": null,
+    "semestre_recomendado": null,
+    "carrera": null,
+    "estado": "activa",
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.asignaturas",
+  "pk": 2,
+  "fields": {
+    "codigo_asignatura": "FIS101",
+    "nombre_asignatura": "FÝsica I",
+    "descripcion": null,
+    "creditos": null,
+    "semestre_recomendado": null,
+    "carrera": null,
+    "estado": "activa",
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.categoriastemas",
+  "pk": 1,
+  "fields": {
+    "id_asignatura": 1,
+    "nombre_categoria": "┴lgebra",
+    "descripcion": null,
+    "color_hex": null,
+    "icono": null,
+    "orden_visualizacion": null,
+    "estado": "activa",
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.categoriastemas",
+  "pk": 2,
+  "fields": {
+    "id_asignatura": 1,
+    "nombre_categoria": "Cßlculo",
+    "descripcion": null,
+    "color_hex": null,
+    "icono": null,
+    "orden_visualizacion": null,
+    "estado": "activa",
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.consultas",
+  "pk": 1,
+  "fields": {
+    "id_estudiante": 2,
+    "id_asignatura": 1,
+    "id_categoria": null,
+    "titulo": "┐C¾mo resolver esta integral?",
+    "descripcion": "Necesito ayuda con la integral por partes",
+    "prioridad": null,
+    "estado": "pendiente",
+    "fecha_consulta": "2025-10-09T20:09:30.363Z",
+    "fecha_limite_respuesta": null,
+    "es_anonima": null,
+    "adjunto_archivo": "",
+    "tipo_consulta": null,
+    "tags": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.consultas",
+  "pk": 2,
+  "fields": {
+    "id_estudiante": 1,
+    "id_asignatura": 1,
+    "id_categoria": null,
+    "titulo": "Test creaci├│n manage shell",
+    "descripcion": "Prueba",
+    "prioridad": null,
+    "estado": "pendiente",
+    "fecha_consulta": "2025-10-12T17:46:27.169Z",
+    "fecha_limite_respuesta": null,
+    "es_anonima": null,
+    "adjunto_archivo": "",
+    "tipo_consulta": null,
+    "tags": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.docenteasignatura",
+  "pk": 1,
+  "fields": {
+    "id_docente": 1,
+    "id_asignatura": 1,
+    "periodo_academico": "2025-1",
+    "grupo": "A",
+    "created_at": null
+  }
+},
+{
+  "model": "EduConnectApp.docentes",
+  "pk": 1,
+  "fields": {
+    "id_usuario": 2,
+    "codigo_docente": "DOC001",
+    "departamento": null,
+    "titulo_academico": null,
+    "especialidades": null,
+    "biografia": null,
+    "horario_atencion": null,
+    "tiempo_respuesta_maximo": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.estudiantes",
+  "pk": 1,
+  "fields": {
+    "id_usuario": 1,
+    "numero_matricula": "MAT0001",
+    "carrera": null,
+    "semestre": null,
+    "fecha_ingreso": null,
+    "promedio_general": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.estudiantes",
+  "pk": 2,
+  "fields": {
+    "id_usuario": 3,
+    "numero_matricula": "STU0001",
+    "carrera": null,
+    "semestre": null,
+    "fecha_ingreso": null,
+    "promedio_general": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.respuestas",
+  "pk": 1,
+  "fields": {
+    "id_consulta": 1,
+    "id_docente": 1,
+    "contenido_respuesta": "Intenta usar u=... dv=...",
+    "tipo_respuesta": null,
+    "adjunto_archivo": "",
+    "fecha_respuesta": "2025-10-09T20:09:30.376Z",
+    "tiempo_respuesta_horas": 2,
+    "calificacion_respuesta": null,
+    "es_respuesta_definitiva": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.usuarios",
+  "pk": 1,
+  "fields": {
+    "email": "teststudent@example.com",
+    "password_hash": "pbkdf2_sha256$1000000$gl7qzVJRmGoCOhDDfA0c9G$8wPpTW5zq+LV6axOthK5hhZS23NAg85QDqy0ZJLH0h4=",
+    "tipo_usuario": "estudiante",
+    "nombre": "Test",
+    "apellido_paterno": "Student",
+    "apellido_materno": null,
+    "telefono": null,
+    "fecha_registro": null,
+    "ultimo_acceso": null,
+    "estado": "activo",
+    "foto_perfil": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.usuarios",
+  "pk": 2,
+  "fields": {
+    "email": "docente1@example.com",
+    "password_hash": "pbkdf2_sha256$1000000$VzDgHYQ1gp1E7A2tCBhS4N$BZtiWi547IP2CxUDZnx0G6Gi6y8X+bSL2I3W0FlGWso=",
+    "tipo_usuario": "docente",
+    "nombre": "Sebastian",
+    "apellido_paterno": "Pizarro",
+    "apellido_materno": null,
+    "telefono": "666",
+    "fecha_registro": null,
+    "ultimo_acceso": null,
+    "estado": "activo",
+    "foto_perfil": null,
+    "created_at": null,
+    "updated_at": null
+  }
+},
+{
+  "model": "EduConnectApp.usuarios",
+  "pk": 3,
+  "fields": {
+    "email": "student1@example.com",
+    "password_hash": "pbkdf2_sha256$1000000$QpHk18VvHpC48ubzXnMm2t$CYSiMHqJfWyDN7l1dYSQRBtHWBW8yToaloi8FIS0j34=",
+    "tipo_usuario": "estudiante",
+    "nombre": "Joseph",
+    "apellido_paterno": "Nohra",
+    "apellido_materno": null,
+    "telefono": "666",
+    "fecha_registro": null,
+    "ultimo_acceso": null,
+    "estado": "activo",
+    "foto_perfil": null,
+    "created_at": null,
+    "updated_at": null
+  }
+}
+]

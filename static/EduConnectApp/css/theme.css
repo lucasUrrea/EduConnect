@@ -1,0 +1,26 @@
+
+:root{
+  --amsp-deep: #04182a;
+  --amsp-teal: #178f8f;
+  --amsp-cream: #f6efe8;
+  --amsp-mauve: #8f5f7a;
+  --amsp-rose: #d99aad;
+  --amsp-muted: #6b7a80;
+  --card: #ffffff;
+}
+
+.navbar, .bg-primary{background: linear-gradient(180deg, var(--amsp-deep), rgba(23,143,143,0.85)) !important;}
+.navbar .navbar-brand, .navbar a, .navbar .nav-link{color: var(--amsp-cream) !important}
+
+.card{background:var(--card); border:0; border-radius:.75rem; box-shadow: 0 6px 24px rgba(6,12,20,0.08)}
+.shadow-soft{box-shadow: 0 8px 30px rgba(6,12,20,0.06)}
+
+.btn-primary{background: linear-gradient(90deg,var(--amsp-teal), var(--amsp-mauve)) !important; border:0 !important; color: var(--amsp-cream) !important}
+.btn-outline-primary{border-color:rgba(111,179,184,0.18) !important; color:var(--amsp-cream) !important}
+.bg-info{background: linear-gradient(90deg,#2e7a7a,#175d5d) !important; color: var(--amsp-cream) !important}
+
+.hero-title{font-weight:700; letter-spacing:-0.5px; color:var(--amsp-cream)}
+.h2, h1.h2, .page-title { color: var(--amsp-deep); }
+.hero-lead{color:var(--amsp-muted)}
+
+.kpi h2{color:var(--amsp-teal)}

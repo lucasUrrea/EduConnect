@@ -1,0 +1,50 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Mi Progreso{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Mi Progreso Académico</h1>
+    <a href="{% url 'mis_consultas' %}" class="btn btn-outline-secondary">Volver a Consultas</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="kpi">
+                    <h5>Total Consultas</h5>
+                    <h2>{{ total }}</h2>
+                    <p class="small-muted">Respondidas: {{ respondidas }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Indicadores</h5>
+                <p>Porcentaje de respuestas: <strong>{{ percent_respuestas }}%</strong></p>
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                        <div class="chart-card">
+                            <canvas id="progresoChart" class="chart-canvas" data-type="bar" data-label='{{ "Consultas" }}' data-labels='{{ labels|safe }}' data-values='{{ values|safe }}'></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-card">
+                            <canvas id="donutChart" class="chart-canvas" data-type="doughnut" data-label='"Estado"' data-labels='{{ donut_labels|safe }}' data-values='{{ donut_values|safe }}'></canvas>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <h6>Consultas por Asignatura (Top 6)</h6>
+                <div class="chart-card mt-2">
+                    <canvas id="asignChart" class="chart-canvas" data-type="bar" data-label='"Por Asignatura"' data-labels='{{ asign_labels|safe }}' data-values='{{ asign_values|safe }}'></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

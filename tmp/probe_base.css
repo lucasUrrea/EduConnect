@@ -1,0 +1,30 @@
+/* Base typography and resets */
+:root{
+  --amsp-deep: #05263a;
+  --amsp-teal: #2ea6a6;
+  --amsp-cream: #f3efe9;
+  --amsp-mauve: #b07ba7;
+  --amsp-rose: #e6b7c8;
+  --amsp-text: #0f1b1f;
+  --amsp-muted: #6b7a80;
+}
+
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color:var(--amsp-text);
+  background-color:var(--amsp-cream);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+a{color:var(--amsp-deep);}
+small, .small-muted{color:var(--amsp-muted);} 
+
+.container, .container-fluid{max-width:1200px}
+
+/* Utility spacing */
+.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:1rem}
+.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:1rem}
+.text-center{text-align:center}

@@ -1,0 +1,91 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Eliminación - EduConnect{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0" style="padding-top: 1.5rem; padding-bottom: 1.5rem;">
+    <div class="px-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <!-- Alerta de confirmación -->
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Confirmar Eliminación
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-3">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Advertencia:</strong> Esta acción no se puede deshacer
+                        </div>
+
+                        <!-- Información de la respuesta a eliminar -->
+                        <div class="mb-4 p-3 bg-light rounded">
+                            <h6 class="mb-2">
+                                <i class="fas fa-reply me-1"></i>Respuesta a Eliminar:
+                            </h6>
+                            <p class="mb-2">
+                                <strong>Estudiante:</strong><br>
+                                {{ consulta.id_estudiante.id_usuario.nombre }} 
+                                {{ consulta.id_estudiante.id_usuario.apellido_paterno }}
+                            </p>
+                            <p class="mb-2">
+                                <strong>Pregunta:</strong><br>
+                                {{ consulta.titulo }}
+                            </p>
+                            <p class="mb-2">
+                                <strong>Tu Respuesta (primeras 200 caracteres):</strong><br>
+                                {{ respuesta.contenido_respuesta|truncatechars:200 }}
+                            </p>
+                            <p class="mb-0">
+                                <strong>Enviada:</strong> {{ respuesta.fecha_respuesta|date:"d/m/Y H:i" }}
+                            </p>
+                        </div>
+
+                        <!-- Información adicional -->
+                        <div class="alert alert-info small mb-3">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Si eliminas esta respuesta, la consulta volverá al estado "Pendiente" y los estudiantes la verán como sin responder.
+                        </div>
+
+                        <!-- Formulario de confirmación -->
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-trash me-1"></i>Sí, Eliminar Respuesta
+                                </button>
+                                <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-times me-1"></i>Cancelar
+                                </a>
+                            </div>
+                        </form>
+
+                        <!-- Botón adicional para volver a ver -->
+                        <div class="mt-3 text-center">
+                            <a href="{% url 'ver_respuesta' respuesta.id_respuesta %}" class="text-muted text-decoration-none small">
+                                <i class="fas fa-arrow-left me-1"></i>Volver a ver la respuesta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de ayuda -->
+                <div class="alert alert-light mt-4 border">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-lightbulb me-1"></i>¿Necesitas Ayuda?
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>En lugar de eliminar, considera <strong>editar</strong> la respuesta</li>
+                        <li>La eliminación no notificará al estudiante</li>
+                        <li>Si cambias de opinión, puedes volver a responder la consulta</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

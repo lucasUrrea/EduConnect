@@ -1,0 +1,18 @@
+:root{
+	--amsp-bg:#0b1320;
+	--amsp-cream:#f6efe8;
+	--amsp-teal:#6fb3b8;
+	--amsp-mauve:#9e7aa4;
+	--amsp-muted:rgba(255,255,255,0.65);
+}
+
+body{background:linear-gradient(180deg,var(--amsp-bg),#07101a);color:var(--amsp-cream)}
+
+.hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);}
+.hero-card h1{color:var(--amsp-cream)}
+
+.card-hero{padding-top:2.5rem;padding-bottom:2.5rem}
+.hero-card .btn-primary{background:linear-gradient(90deg,var(--amsp-teal),var(--amsp-mauve)) !important; color:var(--amsp-cream)}
+.hero-card .btn-outline-primary{border-color:rgba(255,255,255,0.06); color:var(--amsp-cream)}
+
+.features .feature-card{background:transparent;border:1px solid rgba(255,255,255,0.03)}

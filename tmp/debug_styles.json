@@ -1,0 +1,87 @@
+{
+  "url": "/?debug_css=1",
+  "timestamp": 1760305560257,
+  "computed": {
+    "body": {
+      "color": "rgb(15, 27, 31)",
+      "backgroundColor": "rgb(246, 239, 232)",
+      "paddingTop": "180px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    },
+    ".navbar": {
+      "color": "rgb(246, 239, 232)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "8px",
+      "marginTop": "0px",
+      "top": "0px",
+      "position": "fixed",
+      "display": "flex",
+      "opacity": "1"
+    },
+    ".main-container": {
+      "color": "rgb(15, 27, 31)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "180px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    },
+    ".main-content-with-sidebar": {
+      "color": "rgb(15, 27, 31)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "32px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    },
+    ".card-hero": {
+      "color": "rgb(15, 27, 31)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "paddingTop": "40px",
+      "marginTop": "24px",
+      "top": "0px",
+      "position": "relative",
+      "display": "flex",
+      "opacity": "1"
+    },
+    ".hero-title": {
+      "color": "rgb(246, 239, 232)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "0px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    },
+    ".hero-lead": {
+      "color": "rgb(107, 122, 128)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "0px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    },
+    ".page-title": null,
+    ".small-muted": {
+      "color": "rgb(15, 27, 31)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "paddingTop": "0px",
+      "marginTop": "0px",
+      "top": "auto",
+      "position": "static",
+      "display": "block",
+      "opacity": "1"
+    }
+  }
+}

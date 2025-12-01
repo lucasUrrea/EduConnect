@@ -1,0 +1,21 @@
+.main-container{padding:1rem}
+
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1030}
+/* reduce default top padding so content isn't pushed too far down behind the fixed navbar */
+body{padding-top:24px}
+
+/* Sidebar and content spacing aligned to 56px navbar height */
+.sidebar{width:200px;background:transparent;padding:.25rem;height:calc(100vh - 24px);position:fixed;left:0;top:24px;z-index:1020}
+.main-content-with-sidebar{margin-left:220px;padding:.5rem;min-height:calc(100vh - 24px)}
+
+/* Reduce extra top spacing so content aligns near top when sidebar present */
+.main-content-with-sidebar { padding-top: 0.5rem; }
+
+.card-hero{padding:2.5rem;border-radius:.85rem}
+
+.feature-card .fa-3x{color:var(--amsp-mauve)}
+
+@media (max-width:768px){
+  .sidebar{display:none}
+  .main-content-with-sidebar{margin-left:0}
+}

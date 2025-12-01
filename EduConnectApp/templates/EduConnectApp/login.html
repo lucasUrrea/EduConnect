@@ -1,0 +1,341 @@
+{% extends 'EduConnectApp/base.html' %}
+
+{% block title %}EduConnect - Inicio de Sesión Seguro{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-8) 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .login-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 15s ease-in-out infinite;
+    }
+    
+    .login-container::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 20s ease-in-out infinite reverse;
+    }
+    
+    .login-card {
+        position: relative;
+        z-index: 1;
+        background: var(--neutral-white);
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-2xl);
+        overflow: hidden;
+        max-width: 480px;
+        width: 100%;
+    }
+    
+    .login-header {
+        padding: var(--space-8);
+        text-align: center;
+        background: var(--bg-gradient-primary);
+        color: var(--neutral-white);
+        position: relative;
+    }
+    
+    .login-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
+    }
+    
+    .login-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-full);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--space-4);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .login-icon i {
+        font-size: 2.5rem;
+        color: var(--neutral-white);
+    }
+    
+    .login-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .login-subtitle {
+        opacity: 0.9;
+        margin: var(--space-2) 0 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .login-body {
+        padding: var(--space-8);
+    }
+    
+    .form-group {
+        margin-bottom: var(--space-5);
+    }
+    
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-weight: 600;
+        color: var(--neutral-700);
+        margin-bottom: var(--space-2);
+        font-size: 0.875rem;
+    }
+    
+    .form-label i {
+        color: var(--primary-600);
+    }
+    
+    .form-input-wrapper {
+        position: relative;
+    }
+    
+    .form-control-lg {
+        padding: var(--space-4);
+        font-size: 1rem;
+        border: 2px solid var(--neutral-300);
+        border-radius: var(--radius-lg);
+        transition: all var(--transition-base);
+        background: var(--neutral-50);
+    }
+    
+    .form-control-lg:focus {
+        outline: none;
+        border-color: var(--primary-500);
+        background: var(--neutral-white);
+        box-shadow: 0 0 0 4px rgba(27, 91, 153, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .btn-login {
+        width: 100%;
+        padding: var(--space-4);
+        font-size: 1.125rem;
+        font-weight: 700;
+        background: var(--bg-gradient-primary);
+        border: none;
+        border-radius: var(--radius-lg);
+        color: var(--neutral-white);
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-login::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width var(--transition-smooth), height var(--transition-smooth);
+    }
+    
+    .btn-login:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .btn-login:active {
+        transform: translateY(0);
+    }
+    
+    .login-footer {
+        padding: var(--space-6);
+        background: var(--neutral-50);
+        text-align: center;
+        border-top: 1px solid var(--neutral-200);
+    }
+    
+    .login-help {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--neutral-600);
+        font-size: 0.875rem;
+        padding: var(--space-2) var(--space-4);
+        background: var(--neutral-white);
+        border-radius: var(--radius-lg);
+        transition: all var(--transition-base);
+    }
+    
+    .login-help:hover {
+        color: var(--primary-600);
+        background: var(--primary-50);
+        transform: translateY(-1px);
+    }
+    
+    .security-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-4);
+        background: var(--accent-green);
+        color: var(--neutral-white);
+        border-radius: var(--radius-full);
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-top: var(--space-4);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        50% {
+            transform: translate(30px, 30px) scale(1.05);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="login-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="login-title">EduConnect</h1>
+            <p class="login-subtitle">Accede a tu espacio académico</p>
+        </div>
+        
+        <!-- Body -->
+        <div class="login-body">
+            <form method="post" id="loginForm">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Correo Electrónico
+                    </label>
+                    <div class="form-input-wrapper">
+                        <input 
+                            type="email" 
+                            class="form-control form-control-lg" 
+                            id="email" 
+                            name="email" 
+                            placeholder="tu@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Contraseña
+                    </label>
+                    <div class="form-input-wrapper">
+                        <input 
+                            type="password" 
+                            class="form-control form-control-lg" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Iniciar Sesión
+                </button>
+                
+                <div class="text-center">
+                    <div class="security-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Conexión Segura SSL
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Footer -->
+        <div class="login-footer">
+            <a href="#" class="login-help">
+                <i class="fas fa-question-circle"></i>
+                ¿Necesitas ayuda?
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function() {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner spinner-sm me-2"></span>Verificando credenciales...';
+    });
+    
+    // Input animation effects
+    const inputs = form.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.01)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}

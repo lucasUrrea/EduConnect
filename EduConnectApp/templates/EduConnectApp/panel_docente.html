@@ -1,0 +1,82 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Panel Docente{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">Panel Docente</h1>
+        <div>
+            <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary">Ir al Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6>Asignaturas</h6>
+                    <p class="mb-0">{{ asignaturas_docente.count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6>Consultas recientes</h6>
+                    <p class="mb-0">{{ consultas_recientes.count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6>Alumnos activos</h6>
+                    <p class="mb-0">{{ estudiantes.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Consultas Recientes</h5>
+        </div>
+        <div class="card-body">
+            {% if consultas_recientes %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Estudiante</th>
+                                <th>Asignatura</th>
+                                <th>Título</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in consultas_recientes %}
+                            <tr>
+                                <td>{{ c.fecha_consulta|date:'d/m/Y H:i' }}</td>
+                                <td>{{ c.id_estudiante.id_usuario.nombre }} {{ c.id_estudiante.id_usuario.apellido_paterno }}</td>
+                                <td>{{ c.id_asignatura.nombre_asignatura }}</td>
+                                <td>{{ c.titulo }}</td>
+                                <td>
+                                    <a href="{% url 'ver_consulta' c.id_consulta %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                    <a href="{% url 'responder_consulta' c.id_consulta %}" class="btn btn-sm btn-primary">Responder</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No hay consultas recientes</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Editar Respuesta - EduConnect{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0" style="padding-top: 1.5rem; padding-bottom: 1.5rem;">
+    <div class="px-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1 fw-bold">
+                            <i class="fas fa-edit text-warning me-2"></i>
+                            Editar Respuesta
+                        </h2>
+                        <p class="text-muted mb-0 small">
+                            Modifica tu respuesta a la consulta del estudiante
+                        </p>
+                    </div>
+                    <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Volver al Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Información de la consulta original -->
+                <div class="card mb-4" style="border-left: 4px solid #3b82f6;">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-question-circle text-info me-2"></i>
+                            Consulta Original
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Estudiante</label>
+                                <div class="fw-semibold">
+                                    {{ consulta.id_estudiante.id_usuario.nombre }} 
+                                    {{ consulta.id_estudiante.id_usuario.apellido_paterno }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Matrícula</label>
+                                <div class="fw-semibold">{{ consulta.id_estudiante.numero_matricula }}</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Asignatura</label>
+                                <div class="fw-semibold">{{ consulta.id_asignatura.nombre_asignatura }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Código</label>
+                                <div class="fw-semibold">{{ consulta.id_asignatura.codigo_asignatura }}</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted small">Pregunta</label>
+                            <div class="p-3 bg-light rounded">
+                                <h5>{{ consulta.titulo }}</h5>
+                                <p class="mb-0">{{ consulta.descripcion }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Prioridad</label>
+                                <div>
+                                    {% if consulta.prioridad == 'baja' %}
+                                    <span class="badge bg-info"><i class="fas fa-arrow-down me-1"></i>Baja</span>
+                                    {% elif consulta.prioridad == 'media' %}
+                                    <span class="badge bg-warning"><i class="fas fa-minus me-1"></i>Media</span>
+                                    {% elif consulta.prioridad == 'alta' %}
+                                    <span class="badge bg-danger"><i class="fas fa-arrow-up me-1"></i>Alta</span>
+                                    {% elif consulta.prioridad == 'urgente' %}
+                                    <span class="badge bg-danger"><i class="fas fa-exclamation me-1"></i>Urgente</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Fecha de Consulta</label>
+                                <div class="fw-semibold">{{ consulta.fecha_consulta|date:"d/m/Y H:i" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de edición -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-pencil-alt text-warning me-2"></i>
+                            Editar tu Respuesta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error:</strong>
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endif %}
+
+                            <!-- Contenido de la respuesta -->
+                            <div class="mb-3">
+                                <label for="id_contenido_respuesta" class="form-label">
+                                    <i class="fas fa-file-alt me-1"></i>Contenido de la Respuesta
+                                </label>
+                                {{ form.contenido_respuesta }}
+                                {% if form.contenido_respuesta.errors %}
+                                <div class="alert alert-danger small mt-2">
+                                    {% for error in form.contenido_respuesta.errors %}{{ error }}{% endfor %}
+                                </div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block mt-2">
+                                    Proporciona una respuesta clara y completa a la consulta del estudiante
+                                </small>
+                            </div>
+
+                            <!-- Tipo de respuesta -->
+                            <div class="mb-3">
+                                <label for="id_tipo_respuesta" class="form-label">
+                                    <i class="fas fa-tags me-1"></i>Tipo de Respuesta
+                                </label>
+                                {{ form.tipo_respuesta }}
+                                {% if form.tipo_respuesta.errors %}
+                                <div class="alert alert-danger small mt-2">
+                                    {% for error in form.tipo_respuesta.errors %}{{ error }}{% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Adjunto de archivo -->
+                            <div class="mb-3">
+                                <label for="id_adjunto_archivo" class="form-label">
+                                    <i class="fas fa-paperclip me-1"></i>Archivo Adjunto (opcional)
+                                </label>
+                                {% if respuesta.adjunto_archivo %}
+                                <div class="alert alert-info mb-2">
+                                    <small>
+                                        Archivo actual: <strong>{{ respuesta.adjunto_archivo.name }}</strong>
+                                    </small>
+                                </div>
+                                {% endif %}
+                                {{ form.adjunto_archivo }}
+                                {% if form.adjunto_archivo.errors %}
+                                <div class="alert alert-danger small mt-2">
+                                    {% for error in form.adjunto_archivo.errors %}{{ error }}{% endfor %}
+                                </div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block mt-2">
+                                    Sube un nuevo archivo para reemplazar el anterior (PDF, DOC, IMG, etc.)
+                                </small>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save me-1"></i>Guardar Cambios
+                                </button>
+                                <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-1"></i>Cancelar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar informativo -->
+            <div class="col-lg-4">
+                <!-- Información de la respuesta actual -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Información
+                        </h5>
+                    </div>
+                    <div class="card-body small">
+                        <div class="mb-3">
+                            <label class="text-muted">Fecha de Respuesta Original</label>
+                            <div>{{ respuesta.fecha_respuesta|date:"d/m/Y H:i" }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted">Tiempo de Respuesta</label>
+                            <div>
+                                {% if respuesta.tiempo_respuesta_horas %}
+                                    {{ respuesta.tiempo_respuesta_horas }} horas
+                                {% else %}
+                                    No calculado
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted">Tipo de Respuesta Actual</label>
+                            <div>
+                                <span class="badge bg-primary">{{ respuesta.tipo_respuesta }}</span>
+                            </div>
+                        </div>
+                        {% if respuesta.es_aceptada %}
+                        <div class="alert alert-success small mb-0">
+                            <i class="fas fa-check-circle me-1"></i>
+                            <strong>Respuesta Aceptada</strong> por el estudiante
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Consejos de edición -->
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-lightbulb me-2"></i>Consejos para Editar
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>Revisa la pregunta original antes de editar</li>
+                        <li>Sé claro y preciso en tu respuesta</li>
+                        <li>Incluye ejemplos si es posible</li>
+                        <li>Actualiza archivos adjuntos si es necesario</li>
+                        <li>Verifica la ortografía y gramática</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos de formulario */
+    textarea, input[type="file"] {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 10px;
+        font-family: inherit;
+    }
+
+    textarea:focus, input[type="file"]:focus {
+        background-color: #fff;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+</style>
+{% endblock %}

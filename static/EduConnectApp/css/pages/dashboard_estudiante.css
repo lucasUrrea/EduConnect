@@ -1,0 +1,10 @@
+
+:root{--amsp-cream:#f6efe8;--amsp-teal:#6fb3b8;--amsp-mauve:#9e7aa4}
+
+.page-title{margin-top:0.2rem;margin-bottom:1rem;color:var(--amsp-text) !important}
+.profile-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+
+
+.main-content-with-sidebar .page-title{padding-top:0.25rem}
+
+.d-flex .h2, .page-title h1, .page-title h2{color:var(--amsp-text) !important}

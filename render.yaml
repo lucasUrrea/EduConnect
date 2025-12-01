@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: educonnect-app
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
+    startCommand: gunicorn modulos_consultas.wsgi
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_HOSTS
+        value: "*.render.com"
+
+  - type: postgresql
+    name: educonnect-db
+    version: "15"
+    ipAllowList: []
+    plan: free
+
+  # Optional: Redis for caching
+  - type: redis
+    name: educonnect-cache
+    version: "7"
+    plan: free

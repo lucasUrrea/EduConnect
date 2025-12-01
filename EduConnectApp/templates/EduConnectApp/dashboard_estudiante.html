@@ -1,0 +1,513 @@
+﻿{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Estudiante - EduConnect{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0" style="padding-top: 1.5rem; padding-bottom: 1.5rem;">
+<div class="px-4">
+<div class="dashboard-header mb-4">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <h2 class="mb-1 fw-bold">
+                <i class="fas fa-user-graduate text-primary me-2"></i>
+                Dashboard Estudiante
+                <span class="badge bg-primary ms-2" style="font-size: 0.6rem; vertical-align: middle;">
+                    <i class="fas fa-shield-alt me-1"></i>ROL: ESTUDIANTE
+                </span>
+            </h2>
+            <p class="text-muted mb-0 small">
+                Bienvenido, <strong>{{ estudiante.id_usuario.nombre }} {{ estudiante.id_usuario.apellido_paterno }}</strong>
+                <span class="badge bg-info ms-2" style="font-size: 0.7rem;">Matrícula: {{ estudiante.numero_matricula }}</span>
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <a href="{% url 'crear_consulta' %}" class="btn btn-primary shadow-sm me-2">
+                <i class="fas fa-plus-circle me-2"></i>Nueva Consulta
+            </a>
+            <button class="btn btn-outline-secondary btn-sm" disabled title="Solo docentes pueden acceder">
+                <i class="fas fa-lock me-1"></i>Reportes
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="kpi-card" style="border-left: 4px solid #3b82f6;">
+            <div class="kpi-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <div class="kpi-info">
+                <div class="kpi-value">{{ total_consultas }}</div>
+                <div class="kpi-label">Total Consultas</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="kpi-card" style="border-left: 4px solid #f59e0b;">
+            <div class="kpi-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="kpi-info">
+                <div class="kpi-value">{{ consultas_pendientes }}</div>
+                <div class="kpi-label">Pendientes</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="kpi-card" style="border-left: 4px solid #10b981;">
+            <div class="kpi-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="kpi-info">
+                <div class="kpi-value">{{ consultas_respondidas }}</div>
+                <div class="kpi-label">Respondidas</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="kpi-card" style="border-left: 4px solid #8b5cf6;">
+            <div class="kpi-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="kpi-info">
+                <div class="kpi-value">{{ estudiante.promedio_general|default:"N/A" }}</div>
+                <div class="kpi-label">Promedio General</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección exclusiva de Estudiante: Acciones Rápidas -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-info border-0 shadow-sm">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fa-2x me-3"></i>
+                <div class="flex-grow-1">
+                    <h6 class="alert-heading mb-1">
+                        <i class="fas fa-user-graduate me-1"></i>Panel de Estudiante - Acceso Limitado
+                    </h6>
+                    <small class="mb-0">Como estudiante, puedes crear y ver tus consultas. No tienes acceso a responder consultas de otros estudiantes ni ver estadísticas globales.</small>
+                </div>
+                <div class="ms-3">
+                    <span class="badge bg-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                        <i class="fas fa-lock me-1"></i>Acceso: Solo mis consultas
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="row g-3 mb-4">
+    <div class="col-lg-8">
+        <div class="card-professional">
+            <div class="card-header-professional">
+                <h5 class="mb-0">
+                    <i class="fas fa-id-card me-2"></i>Información Académica
+                </h5>
+            </div>
+            <div class="card-body-professional">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-user me-2"></i>Nombre Completo
+                            </label>
+                            <div class="info-value">
+                                {{ estudiante.id_usuario.nombre }} {{ estudiante.id_usuario.apellido_paterno }}
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-id-badge me-2"></i>Matrícula
+                            </label>
+                            <div class="info-value">{{ estudiante.numero_matricula }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            <div class="info-value">{{ estudiante.id_usuario.email }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-graduation-cap me-2"></i>Carrera
+                            </label>
+                            <div class="info-value">{{ estudiante.carrera }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-book me-2"></i>Semestre
+                            </label>
+                            <div class="info-value">{{ estudiante.semestre }}°</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">
+                                <i class="fas fa-calendar-alt me-2"></i>Fecha de Ingreso
+                            </label>
+                            <div class="info-value">{{ estudiante.fecha_ingreso|date:"d/m/Y"|default:"No disponible" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card-professional text-center" style="background: linear-gradient(135deg, var(--primary-600), var(--accent-600));">
+            <div class="card-body-professional text-white py-3">
+                <i class="fas fa-calendar-check fa-2x mb-2 opacity-75"></i>
+                <h6 class="mb-1 small">Último Acceso</h6>
+                <p class="mb-0 fw-semibold">
+                    {{ estudiante.id_usuario.ultimo_acceso|date:"d/m/Y H:i"|default:"Primer acceso" }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <div class="card-professional">
+            <div class="card-header-professional d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Consultas Recientes
+                </h5>
+                <a href="{% url 'mis_consultas' %}" class="btn btn-outline-primary btn-sm">
+                    Ver Todas <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body-professional">
+                {% if consultas_recientes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Asignatura</th>
+                                    <th>Título</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for consulta in consultas_recientes %}
+                                <tr>
+                                    <td>
+                                        <div class="text-nowrap">
+                                            <small class="text-muted">{{ consulta.fecha_consulta|date:"d/m/Y" }}</small><br>
+                                            <small class="text-muted">{{ consulta.fecha_consulta|date:"H:i" }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">
+                                            {{ consulta.id_asignatura.codigo_asignatura }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">{{ consulta.titulo|truncatechars:50 }}</div>
+                                        {% if consulta.descripcion %}
+                                            <small class="text-muted">{{ consulta.descripcion|truncatechars:70 }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if consulta.prioridad == 'baja' %}
+                                            <span class="badge-priority low">
+                                                <i class="fas fa-arrow-down me-1"></i>Baja
+                                            </span>
+                                        {% elif consulta.prioridad == 'media' %}
+                                            <span class="badge-priority medium">
+                                                <i class="fas fa-minus me-1"></i>Media
+                                            </span>
+                                        {% elif consulta.prioridad == 'alta' %}
+                                            <span class="badge-priority high">
+                                                <i class="fas fa-arrow-up me-1"></i>Alta
+                                            </span>
+                                        {% else %}
+                                            <span class="badge-priority urgent">
+                                                <i class="fas fa-exclamation me-1"></i>Urgente
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if consulta.estado == 'pendiente' %}
+                                            <span class="badge-status pending">
+                                                <i class="fas fa-clock me-1"></i>Pendiente
+                                            </span>
+                                        {% elif consulta.estado == 'en_proceso' %}
+                                            <span class="badge-status in-progress">
+                                                <i class="fas fa-spinner me-1"></i>En Proceso
+                                            </span>
+                                        {% elif consulta.estado == 'respondida' %}
+                                            <span class="badge-status answered">
+                                                <i class="fas fa-check me-1"></i>Respondida
+                                            </span>
+                                        {% elif consulta.estado == 'cerrada' %}
+                                            <span class="badge-status closed">
+                                                <i class="fas fa-times me-1"></i>Cerrada
+                                            </span>
+                                        {% else %}
+                                            <span class="badge-status rejected">
+                                                <i class="fas fa-ban me-1"></i>Rechazada
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'ver_consulta' consulta.id_consulta %}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-4x text-muted mb-3 opacity-50"></i>
+                        <h5 class="text-muted mb-2">No tienes consultas aún</h5>
+                        <p class="text-muted mb-4">Crea tu primera consulta para empezar</p>
+                        <a href="{% url 'crear_consulta' %}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Crear Primera Consulta
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-12">
+        <div class="card-professional">
+            <div class="card-header-professional">
+                <h5 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>Acciones Rápidas
+                </h5>
+            </div>
+            <div class="card-body-professional">
+                <div class="row g-3">
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{% url 'crear_consulta' %}" class="quick-action-card">
+                            <div class="quick-action-icon" style="background: linear-gradient(135deg, var(--primary-600), var(--primary-700));">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="quick-action-title">Nueva Consulta</div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{% url 'mis_consultas' %}" class="quick-action-card">
+                            <div class="quick-action-icon" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <div class="quick-action-title">Mis Consultas</div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{% url 'mi_progreso' %}" class="quick-action-card">
+                            <div class="quick-action-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="quick-action-title">Mi Progreso</div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{% url 'editar_perfil' %}" class="quick-action-card">
+                            <div class="quick-action-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="quick-action-title">Editar Perfil</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* KPI Cards - Horizontal layout */
+.kpi-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.kpi-card .kpi-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.kpi-card .kpi-info {
+    flex: 1;
+}
+
+.kpi-card .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+}
+
+.kpi-card .kpi-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Reducir padding de tarjetas profesionales */
+.card-professional {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.card-professional .card-body-professional { 
+    padding: 1rem; 
+}
+
+.card-professional .card-header-professional { 
+    padding: 0.75rem 1rem; 
+    font-size: 1rem; 
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Info items más compactos */
+.info-item { 
+    margin-bottom: 0.75rem; 
+}
+
+.info-label { 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    color: #6b7280; 
+    display: block; 
+    margin-bottom: 0.25rem; 
+}
+
+.info-value { 
+    font-size: 0.95rem; 
+    color: #1f2937; 
+    font-weight: 500; 
+}
+
+/* Quick action cards más compactos */
+.quick-action-card { 
+    display: flex; 
+    align-items: center; 
+    padding: 0.75rem; 
+    border-radius: 12px; 
+    background: #f9fafb; 
+    text-decoration: none; 
+    color: #1f2937; 
+    transition: all 0.3s ease; 
+    border: 2px solid transparent; 
+}
+
+.quick-action-card:hover { 
+    background: white; 
+    border-color: #3b82f6; 
+    transform: translateY(-4px); 
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12); 
+}
+
+.quick-action-icon { 
+    width: 48px; 
+    height: 48px; 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 1.25rem; 
+    color: white; 
+    margin-right: 0.75rem; 
+    flex-shrink: 0; 
+}
+
+.quick-action-title { 
+    font-size: 0.95rem; 
+    font-weight: 600; 
+}
+
+/* Badges */
+.badge-priority { 
+    padding: 0.25rem 0.5rem; 
+    border-radius: 20px; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    display: inline-flex; 
+    align-items: center; 
+}
+
+.badge-priority.low { background: #dbeafe; color: #1e40af; }
+.badge-priority.medium { background: #fef3c7; color: #92400e; }
+.badge-priority.high { background: #fed7aa; color: #9a3412; }
+.badge-priority.urgent { background: #fecaca; color: #991b1b; }
+
+.badge-status { 
+    padding: 0.25rem 0.5rem; 
+    border-radius: 20px; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    display: inline-flex; 
+    align-items: center; 
+}
+
+.badge-status.pending { background: #fef3c7; color: #92400e; }
+.badge-status.in-progress { background: #dbeafe; color: #1e40af; }
+.badge-status.answered { background: #d1fae5; color: #065f46; }
+.badge-status.closed { background: #f3f4f6; color: #374151; }
+.badge-status.rejected { background: #fecaca; color: #991b1b; }
+
+/* Tablas más compactas */
+.table th, .table td { 
+    padding: 0.5rem; 
+    font-size: 0.9rem; 
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Mostrar tabla de permisos al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard Estudiante cargado - Nivel de acceso: BÁSICO');
+});
+</script>
+{% endblock %}

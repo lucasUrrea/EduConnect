@@ -1,0 +1,62 @@
+{% extends 'EduConnectApp/base.html' %}
+
+{% block title %}Mis Consultas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Mis Consultas</h1>
+    <a href="{% url 'crear_consulta' %}" class="btn btn-primary">Crear Consulta</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if consultas %}
+            <div class="alert alert-warning small">
+                <strong>LISTADO (diagnóstico):</strong> {{ consultas|length }} consultas.
+                <ul class="mb-0 mt-1">
+                {% for t in consultas %}
+                    <li style="font-size:0.95rem">{{ t.titulo }} <small class="text-muted">({{ t.fecha_consulta|date:'d/m/Y H:i' }})</small></li>
+                {% endfor %}
+                </ul>
+            </div>
+            <ul class="list-group">
+                {% for c in consultas %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center consulta-row" data-prioridad="{{ c.prioridad|default:'' }}">
+                        <div>
+                            <strong>{{ c.titulo }}</strong><br>
+                            <small class="text-muted">{{ c.id_asignatura.nombre_asignatura }} • {{ c.fecha_consulta|date:'d/m/Y H:i' }}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            {% if c.adjunto_archivo %}
+                                <a href="{{ c.adjunto_archivo.url }}" class="btn btn-sm btn-outline-success me-2" target="_blank" rel="noopener">
+                                    <i class="fas fa-paperclip me-1"></i>Adjunto
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'ver_consulta' c.id_consulta %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes consultas.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    {% if request.GET.debug_js %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        try{
+            const rows = Array.from(document.querySelectorAll('.consulta-row'));
+            console.log('DEBUG_JS (mis_consultas): consulta-row count=', rows.length);
+            rows.forEach((r, i) => {
+                const cs = window.getComputedStyle(r);
+                console.log(`ROW[${i}] display=${cs.display} visibility=${cs.visibility} opacity=${cs.opacity}`, r);
+            });
+        }catch(e){ console.error('DEBUG_JS error', e); }
+    });
+    </script>
+    {% endif %}
+{% endblock %}

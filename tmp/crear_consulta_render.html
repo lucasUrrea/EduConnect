@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Consulta - Estudiante</title>
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/static/EduConnectApp/css/overrides.css">
+    
+    
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>EduConnect
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>Test Student
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout/"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                            </ul>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid main-container">
+        
+        
+        <nav class="sidebar position-fixed d-none d-md-block" id="sidebarMenu">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link " href="/dashboard/estudiante/">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/consulta/crear/">
+                                <i class="fas fa-plus me-2"></i>Nueva Consulta
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-list me-2"></i>Mis Consultas
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </nav>
+        
+
+        
+        <main class="main-content-with-sidebar">
+           
+            
+
+           
+            
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-plus me-2"></i>Nueva Consulta
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/dashboard/estudiante/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>Detalles de la Consulta
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="xqGx3tXmlx8w6fgzC9ZeEeVwqO5DJn1JIcq6ibBLeZSBuurecsH5u9cUBiFMqyPv">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="asignatura" class="form-label">
+                                <i class="fas fa-book me-1"></i>Asignatura <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="asignatura" name="id_asignatura" required onchange="loadCategorias(this.value)">
+                                <option value="">Seleccionar asignatura...</option>
+                                
+                                    <option value="1">
+                                        MAT101 - Matemáticas I
+                                    </option>
+                                
+                                    <option value="2">
+                                        FIS101 - Física I
+                                    </option>
+                                
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="categoria" class="form-label">
+                                <i class="fas fa-tags me-1"></i>Categoría
+                            </label>
+                            <select class="form-select" id="categoria" name="id_categoria">
+                                <option value="">Seleccionar categoría...</option>
+                                
+                                    <option value="1" data-asignatura="1">
+                                        Álgebra
+                                    </option>
+                                
+                                    <option value="2" data-asignatura="1">
+                                        Cálculo
+                                    </option>
+                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="titulo" class="form-label">
+                                <i class="fas fa-heading me-1"></i>Título de la Consulta <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" maxlength="200" required 
+                                   placeholder="Ej: Duda sobre integración por partes">
+                            <div class="form-text">Sé específico y claro en el título para obtener mejores respuestas</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="prioridad" class="form-label">
+                                <i class="fas fa-exclamation-triangle me-1"></i>Prioridad
+                            </label>
+                            <select class="form-select" id="prioridad" name="prioridad">
+                                <option value="baja">
+                                    <i class="fas fa-arrow-down"></i> Baja - No es urgente
+                                </option>
+                                <option value="media" selected>
+                                    <i class="fas fa-minus"></i> Media - Consulta normal
+                                </option>
+                                <option value="alta">
+                                    <i class="fas fa-arrow-up"></i> Alta - Necesito respuesta pronto
+                                </option>
+                                <option value="urgente">
+                                    <i class="fas fa-exclamation"></i> Urgente - Examen/tarea próxima
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo_consulta" class="form-label">
+                                <i class="fas fa-question-circle me-1"></i>Tipo de Consulta
+                            </label>
+                            <select class="form-select" id="tipo_consulta" name="tipo_consulta">
+                                <option value="duda_academica">Duda Académica</option>
+                                <option value="aclaracion_evaluacion">Aclaración de Evaluación</option>
+                                <option value="solicitud_revision">Solicitud de Revisión</option>
+                                <option value="consulta_general">Consulta General</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">
+                            <i class="fas fa-align-left me-1"></i>Descripción Detallada <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="6" required 
+                                  placeholder="Describe tu duda de manera detallada. Incluye:&#10;- El problema específico&#10;- Lo que has intentado&#10;- Dónde te quedaste atascado&#10;- Cualquier información adicional relevante"></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Mientras más detallada sea tu descripción, mejor será la respuesta que recibas
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adjunto" class="form-label">
+                            <i class="fas fa-paperclip me-1"></i>Archivo Adjunto (opcional)
+                        </label>
+                                     <input type="file" class="form-control" id="adjunto" name="adjunto_archivo" 
+                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
+                        <div class="form-text">
+                            Formatos permitidos: PDF, Word, Imágenes (JPG, PNG), TXT. Máximo 10MB
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="es_anonima" name="es_anonima">
+                        <label class="form-check-label" for="es_anonima">
+                            <i class="fas fa-user-secret me-1"></i>
+                            Enviar consulta de forma anónima
+                        </label>
+                        <div class="form-text">
+                            Si marcas esta opción, tu nombre no será visible para otros estudiantes
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Enviar Consulta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Consejos para mejores respuestas
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Sé específico en el título</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Explica lo que has intentado</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Incluye código o fórmulas si aplica</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Adjunta imágenes si es necesario</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Selecciona la prioridad correcta</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>Estadísticas
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <small>Tiempo promedio de respuesta</small>
+                    <span class="badge bg-primary">8.5 horas</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <small>Satisfacción promedio</small>
+                    <span class="badge bg-success">4.2/5.0</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small>Consultas activas</small>
+                    <span class="badge bg-warning">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </main>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/static/EduConnectApp/js/dashboard.js"></script>
+    
+<script>
+function loadCategorias(asignaturaId) {
+    const categoriaSelect = document.getElementById('categoria');
+    const options = categoriaSelect.querySelectorAll('option[data-asignatura]');
+    
+    // Reset y mostrar opción por defecto
+    categoriaSelect.innerHTML = '<option value="">Seleccionar categoría...</option>';
+    
+    if (asignaturaId) {
+        options.forEach(option => {
+            if (option.dataset.asignatura === asignaturaId) {
+                categoriaSelect.appendChild(option.cloneNode(true));
+            }
+        });
+    }
+}
+
+// Contador de caracteres para la descripción
+document.getElementById('descripcion').addEventListener('input', function() {
+    const maxLength = 1000;
+    const currentLength = this.value.length;
+    const remaining = maxLength - currentLength;
+    
+    // Crear o actualizar contador si no existe
+    let counter = this.parentNode.querySelector('.char-counter');
+    if (!counter) {
+        counter = document.createElement('div');
+        counter.className = 'char-counter text-muted small mt-1';
+        this.parentNode.appendChild(counter);
+    }
+    
+    counter.textContent = `${currentLength}/${maxLength} caracteres`;
+    
+    if (remaining < 50) {
+        counter.className = 'char-counter text-warning small mt-1';
+    } else {
+        counter.className = 'char-counter text-muted small mt-1';
+    }
+});
+</script>
+
+
+    
+    <script>
+    (function(){
+        function getCookie(name) {
+            const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return v ? v.pop() : '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            const token = getCookie('csrftoken');
+            if (!token) return;
+            document.querySelectorAll('form[method="post"], form[method="POST"]').forEach(form => {
+                if (!form.querySelector('input[name="csrfmiddlewaretoken"]')) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'csrfmiddlewaretoken';
+                    input.value = token;
+                    form.prepend(input);
+                }
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

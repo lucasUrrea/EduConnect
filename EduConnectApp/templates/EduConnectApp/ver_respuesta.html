@@ -1,0 +1,285 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+
+{% block title %}Ver Respuesta - EduConnect{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0" style="padding-top: 1.5rem; padding-bottom: 1.5rem;">
+    <div class="px-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1 fw-bold">
+                            <i class="fas fa-reply text-success me-2"></i>
+                            Detalle de Respuesta
+                        </h2>
+                        <p class="text-muted mb-0 small">
+                            Revisa la respuesta que enviaste al estudiante
+                        </p>
+                    </div>
+                    <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Volver al Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Información de la consulta -->
+                <div class="card mb-4" style="border-left: 4px solid #3b82f6;">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-question-circle text-info me-2"></i>
+                            Consulta del Estudiante
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Estudiante</label>
+                                <div class="fw-semibold">
+                                    {{ consulta.id_estudiante.id_usuario.nombre }} 
+                                    {{ consulta.id_estudiante.id_usuario.apellido_paterno }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Email</label>
+                                <div class="fw-semibold">{{ consulta.id_estudiante.id_usuario.email }}</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Asignatura</label>
+                                <div class="fw-semibold">{{ consulta.id_asignatura.nombre_asignatura }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Código</label>
+                                <div class="fw-semibold">{{ consulta.id_asignatura.codigo_asignatura }}</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted small">Pregunta</label>
+                            <div class="p-3 bg-light rounded">
+                                <h5 class="mb-2">{{ consulta.titulo }}</h5>
+                                <p class="mb-0">{{ consulta.descripcion }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Prioridad</label>
+                                <div>
+                                    {% if consulta.prioridad == 'baja' %}
+                                    <span class="badge bg-info"><i class="fas fa-arrow-down me-1"></i>Baja</span>
+                                    {% elif consulta.prioridad == 'media' %}
+                                    <span class="badge bg-warning"><i class="fas fa-minus me-1"></i>Media</span>
+                                    {% elif consulta.prioridad == 'alta' %}
+                                    <span class="badge bg-danger"><i class="fas fa-arrow-up me-1"></i>Alta</span>
+                                    {% elif consulta.prioridad == 'urgente' %}
+                                    <span class="badge bg-danger"><i class="fas fa-exclamation me-1"></i>Urgente</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Fecha de Consulta</label>
+                                <div class="fw-semibold">{{ consulta.fecha_consulta|date:"d/m/Y H:i" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de la respuesta -->
+                <div class="card mb-4" style="border-left: 4px solid #10b981;">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-reply text-success me-2"></i>
+                            Tu Respuesta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tipo de respuesta -->
+                        <div class="mb-3">
+                            <label class="text-muted small">Tipo de Respuesta</label>
+                            <div>
+                                {% if respuesta.tipo_respuesta == 'academica' %}
+                                <span class="badge bg-info"><i class="fas fa-book me-1"></i>Académica</span>
+                                {% elif respuesta.tipo_respuesta == 'orientacion' %}
+                                <span class="badge bg-warning"><i class="fas fa-lightbulb me-1"></i>Orientación</span>
+                                {% elif respuesta.tipo_respuesta == 'administrativa' %}
+                                <span class="badge bg-secondary"><i class="fas fa-file-alt me-1"></i>Administrativa</span>
+                                {% else %}
+                                <span class="badge bg-primary"><i class="fas fa-comment me-1"></i>{{ respuesta.tipo_respuesta }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Contenido de la respuesta -->
+                        <div class="mb-3">
+                            <label class="text-muted small">Contenido</label>
+                            <div class="p-3 bg-light rounded">
+                                {{ respuesta.contenido_respuesta|linebreaks }}
+                            </div>
+                        </div>
+
+                        <!-- Archivo adjunto si existe -->
+                        {% if respuesta.adjunto_archivo %}
+                        <div class="mb-3">
+                            <label class="text-muted small">Archivo Adjunto</label>
+                            <div class="p-3 bg-light rounded">
+                                <i class="fas fa-file me-2"></i>
+                                <a href="{{ respuesta.adjunto_archivo.url }}" target="_blank" class="text-decoration-none">
+                                    {{ respuesta.adjunto_archivo.name|truncatechars:50 }}
+                                </a>
+                                <a href="{{ respuesta.adjunto_archivo.url }}" download class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-download me-1"></i>Descargar
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Información de tiempos -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Fecha de Respuesta</label>
+                                <div class="fw-semibold">{{ respuesta.fecha_respuesta|date:"d/m/Y H:i" }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Tiempo de Respuesta</label>
+                                <div class="fw-semibold">
+                                    {% if respuesta.tiempo_respuesta_horas %}
+                                        {{ respuesta.tiempo_respuesta_horas }} horas
+                                    {% else %}
+                                        No calculado
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if respuesta.updated_at %}
+                        <div class="alert alert-info mt-3 small mb-0">
+                            <i class="fas fa-pencil-alt me-1"></i>
+                            <strong>Última actualización:</strong> {{ respuesta.updated_at|date:"d/m/Y H:i" }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Estado de la respuesta -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Estado de la Respuesta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Estado</label>
+                                <div>
+                                    {% if respuesta.es_aceptada %}
+                                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Aceptada</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary"><i class="fas fa-clock me-1"></i>Pendiente de Evaluación</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Visibilidad</label>
+                                <div>
+                                    {% if respuesta.es_publica %}
+                                    <span class="badge bg-info"><i class="fas fa-globe me-1"></i>Pública</span>
+                                    {% else %}
+                                    <span class="badge bg-warning"><i class="fas fa-lock me-1"></i>Privada</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar de acciones -->
+            <div class="col-lg-4">
+                <!-- Botones de acción -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>Acciones
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if es_autor %}
+                        <a href="{% url 'editar_respuesta' respuesta.id_respuesta %}" class="btn btn-warning w-100 mb-2">
+                            <i class="fas fa-edit me-1"></i>Editar Respuesta
+                        </a>
+                        <button type="button" class="btn btn-outline-danger w-100" data-respuesta-id="{{ respuesta.id_respuesta }}" onclick="confirmarEliminacion(this)">
+                            <i class="fas fa-trash me-1"></i>Eliminar Respuesta
+                        </button>
+                        {% else %}
+                        <div class="alert alert-info small mb-0">
+                            <i class="fas fa-info-circle me-1"></i>
+                            No tienes permiso para editar esta respuesta
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Estadísticas de evaluación -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-star me-2"></i>Evaluaciones
+                        </h5>
+                    </div>
+                    <div class="card-body small">
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Los estudiantes podrán evaluar tu respuesta después de haberla recibido
+                        </p>
+                        <div class="text-center py-2">
+                            <div class="badge bg-light text-dark">
+                                Pendiente de evaluación
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de contacto -->
+                <div class="alert alert-info small">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-envelope me-1"></i>Contacto del Estudiante
+                    </h6>
+                    <p class="mb-1">
+                        <strong>Email:</strong><br>
+                        <a href="mailto:{{ consulta.id_estudiante.id_usuario.email }}">
+                            {{ consulta.id_estudiante.id_usuario.email }}
+                        </a>
+                    </p>
+                    <p class="mb-0">
+                        <strong>Teléfono:</strong><br>
+                        {{ consulta.id_estudiante.id_usuario.telefono|default:"No especificado" }}
+                    </p>
+                </div>
+
+                <!-- Volver -->
+                <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-arrow-left me-1"></i>Volver al Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmarEliminacion(element) {
+    const respuestaId = element.getAttribute('data-respuesta-id');
+    if (confirm('¿Estás seguro de que deseas eliminar esta respuesta? Esta acción no se puede deshacer.')) {
+        window.location.href = '/respuesta/' + respuestaId + '/eliminar/';
+    }
+}
+</script>
+{% endblock %}

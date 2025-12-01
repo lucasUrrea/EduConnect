@@ -1,0 +1,370 @@
+{% extends 'EduConnectApp/base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'EduConnectApp/css/pages/responder_consulta.css' %}">
+{% endblock %}
+
+{% block title %}Responder Consulta{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-reply me-2"></i>Responder Consulta
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'dashboard_docente' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>Detalles de la Consulta
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Estudiante:</strong> {{ consulta.id_estudiante.id_usuario.nombre }} {{ consulta.id_estudiante.id_usuario.apellido_paterno }}</p>
+                        <p><strong>Matrícula:</strong> {{ consulta.id_estudiante.numero_matricula }}</p>
+                        <p><strong>Email:</strong> {{ consulta.id_estudiante.id_usuario.email }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Asignatura:</strong> {{ consulta.id_asignatura.codigo_asignatura }} - {{ consulta.id_asignatura.nombre_asignatura }}</p>
+                        <p><strong>Fecha:</strong> {{ consulta.fecha_consulta|date:"d/m/Y H:i" }}</p>
+                        <p><strong>Prioridad:</strong> 
+                            <span class="badge badge-priority-{{ consulta.prioridad }}">
+                                {{ consulta.get_prioridad_display|default:consulta.prioridad|title }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h6><i class="fas fa-heading me-2"></i>Título:</h6>
+                <p class="fs-5">{{ consulta.titulo }}</p>
+
+                {% if consulta.id_categoria %}
+                <h6><i class="fas fa-tags me-2"></i>Categoría:</h6>
+                <span class="badge mb-3 categoria-badge" data-color="{{ consulta.id_categoria.color_hex|default:'#3498db' }}">
+                    {{ consulta.id_categoria.nombre_categoria }}
+                </span>
+                {% endif %}
+
+                <h6><i class="fas fa-align-left me-2"></i>Descripción:</h6>
+                <div class="bg-light p-3 rounded">
+                    <p class="mb-0 preline">{{ consulta.descripcion }}</p>
+                </div>
+
+                {% if consulta.adjunto_archivo %}
+                <h6 class="mt-3"><i class="fas fa-paperclip me-2"></i>Archivo Adjunto:</h6>
+                <a href="{{ consulta.adjunto_archivo }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                    <i class="fas fa-download me-1"></i>Descargar archivo
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>Tu Respuesta
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="contenido_respuesta" class="form-label">
+                            <i class="fas fa-comment me-1"></i>Respuesta Detallada <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control" id="contenido_respuesta" name="contenido_respuesta" 
+                                  rows="8" required placeholder="Escribe aquí tu respuesta detallada...
+
+Consejos para una buena respuesta:
+- Explica paso a paso
+- Proporciona ejemplos si es necesario
+- Menciona recursos adicionales
+- Sé claro y conciso"></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Recuerda ser claro, detallado y constructivo en tu respuesta
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo_respuesta" class="form-label">
+                                <i class="fas fa-tag me-1"></i>Tipo de Respuesta
+                            </label>
+                            <select class="form-select" id="tipo_respuesta" name="tipo_respuesta">
+                                <option value="respuesta_inicial" selected>Respuesta Inicial</option>
+                                <option value="aclaracion">Aclaración</option>
+                                <option value="seguimiento">Seguimiento</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch mt-4">
+                                <input class="form-check-input" type="checkbox" id="es_respuesta_definitiva" 
+                                       name="es_respuesta_definitiva" checked>
+                                <label class="form-check-label" for="es_respuesta_definitiva">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Esta es la respuesta definitiva
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adjunto_archivo" class="form-label">
+                            <i class="fas fa-paperclip me-1"></i>Archivo Adjunto (opcional)
+                        </label>
+                        <input type="file" class="form-control" id="adjunto_archivo" name="adjunto_archivo" 
+                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
+                        <div class="form-text">
+                            Puedes adjuntar documentos, imágenes o ejemplos que complementen tu respuesta
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <div>
+                            <button type="button" class="btn btn-outline-primary me-2" id="previewBtn">
+                                <i class="fas fa-eye me-2"></i>Vista Previa
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-2"></i>Enviar Respuesta
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="col-lg-4">
+        
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-user-graduate me-2"></i>Información del Estudiante
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="avatar-circle avatar-md mx-auto mb-2">
+                        {{ consulta.id_estudiante.id_usuario.nombre.0 }}{{ consulta.id_estudiante.id_usuario.apellido_paterno.0 }}
+                    </div>
+                    <h6>{{ consulta.id_estudiante.id_usuario.nombre }} {{ consulta.id_estudiante.id_usuario.apellido_paterno }}</h6>
+                </div>
+                
+                <ul class="list-unstyled">
+                    <li><strong>Carrera:</strong> {{ consulta.id_estudiante.carrera }}</li>
+                    <li><strong>Semestre:</strong> {{ consulta.id_estudiante.semestre }}°</li>
+                    <li><strong>Promedio:</strong> 
+                        <span class="badge bg-{% if consulta.id_estudiante.promedio_general >= 6.5 %}success{% elif consulta.id_estudiante.promedio_general >= 5.5 %}warning{% else %}danger{% endif %}">
+                            {{ consulta.id_estudiante.promedio_general }}
+                        </span>
+                    </li>
+                    <li><strong>Fecha ingreso:</strong> {{ consulta.id_estudiante.fecha_ingreso|date:"m/Y" }}</li>
+                </ul>
+            </div>
+        </div>
+
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Historial de Consultas
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <small>Total consultas</small>
+                    <span class="badge bg-primary">15</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <small>En esta asignatura</small>
+                    <span class="badge bg-info">3</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <small>Promedio satisfacción</small>
+                    <span class="badge bg-success">4.2/5.0</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small>Última consulta</small>
+                    <span class="badge bg-secondary">Hace 3 días</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Consejos para Responder
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Lee la pregunta completamente</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Proporciona ejemplos prácticos</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Explica paso a paso</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Sugiere recursos adicionales</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Sé empático y constructivo</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>Vista Previa de la Respuesta
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-circle me-2">
+                                {{ docente.id_usuario.nombre.0 }}{{ docente.id_usuario.apellido_paterno.0 }}
+                            </div>
+                            <div>
+                                <strong>{{ docente.id_usuario.nombre }} {{ docente.id_usuario.apellido_paterno }}</strong><br>
+                                <small class="text-muted">{{ docente.titulo_academico }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="preview-content" class="preview-content"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- moved avatar CSS to top extra_css block (kept only once) -->
+
+{% block extra_js %}
+<script>
+// Vista previa de la respuesta
+document.getElementById('previewBtn').addEventListener('click', function() {
+    const contenido = document.getElementById('contenido_respuesta').value;
+    document.getElementById('preview-content').textContent = contenido || 'No has escrito nada aún...';
+    
+    const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+    modal.show();
+});
+
+// Contador de caracteres
+document.getElementById('contenido_respuesta').addEventListener('input', function() {
+    const maxLength = 2000;
+    const currentLength = this.value.length;
+    
+    let counter = this.parentNode.querySelector('.char-counter');
+    if (!counter) {
+        counter = document.createElement('div');
+        counter.className = 'char-counter text-muted small mt-1';
+        this.parentNode.appendChild(counter);
+    }
+    
+    counter.textContent = `${currentLength}/${maxLength} caracteres`;
+    
+    if (currentLength > maxLength * 0.9) {
+        counter.className = 'char-counter text-warning small mt-1';
+    } else {
+        counter.className = 'char-counter text-muted small mt-1';
+    }
+});
+
+// Auto-save cada 30 segundos
+let autoSaveInterval = setInterval(() => {
+    const contenido = document.getElementById('contenido_respuesta').value;
+    if (contenido.length > 10) {
+        localStorage.setItem('respuesta_draft_{{ consulta.id_consulta }}', contenido);
+        
+        // Mostrar indicador de guardado
+        let indicator = document.querySelector('.auto-save-indicator');
+        if (!indicator) {
+            indicator = document.createElement('small');
+            indicator.className = 'auto-save-indicator text-muted';
+            document.getElementById('contenido_respuesta').parentNode.appendChild(indicator);
+        }
+        indicator.innerHTML = '<i class="fas fa-save me-1"></i>Guardado automáticamente';
+        
+        setTimeout(() => {
+            indicator.style.opacity = '0.5';
+        }, 1000);
+    }
+}, 30000);
+
+// Cargar borrador al iniciar
+window.addEventListener('load', () => {
+    const draft = localStorage.getItem('respuesta_draft_{{ consulta.id_consulta }}');
+    if (draft) {
+        document.getElementById('contenido_respuesta').value = draft;
+        
+        if (confirm('Se encontró un borrador guardado. ¿Deseas cargarlo?')) {
+            // Ya está cargado
+        } else {
+            document.getElementById('contenido_respuesta').value = '';
+            localStorage.removeItem('respuesta_draft_{{ consulta.id_consulta }}');
+        }
+    }
+});
+
+// Limpiar borrador al enviar
+document.querySelector('form').addEventListener('submit', () => {
+    localStorage.removeItem('respuesta_draft_{{ consulta.id_consulta }}');
+    clearInterval(autoSaveInterval);
+});
+
+// Aplicar colores dinámicos a badges de categoría
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.categoria-badge').forEach(badge => {
+        const color = badge.getAttribute('data-color');
+        if (color) {
+            badge.style.backgroundColor = color;
+        }
+    });
+});
+</script>
+{% endblock %}

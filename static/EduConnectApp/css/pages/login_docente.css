@@ -1,0 +1,3 @@
+:root{--amsp-cream:#f6efe8;--amsp-teal:#6fb3b8}
+.card-login{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04)}
+.debug-csrf{font-size:.9rem;color:var(--amsp-cream);opacity:.85}

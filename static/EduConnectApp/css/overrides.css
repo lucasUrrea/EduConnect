@@ -1,0 +1,76 @@
+
+:root{
+  --amsp-deep: #04182a;
+  --amsp-teal: #6fb3b8;
+  --amsp-mauve: #9e7aa4;
+  --amsp-cream: #f6efe8;
+}
+
+nav.navbar.navbar-expand-lg.bg-primary, .navbar, .bg-primary, header.navbar {
+  background: linear-gradient(180deg,var(--amsp-deep), rgba(111,179,184,0.12)) !important;
+  color: var(--amsp-cream) !important;
+}
+.navbar .navbar-brand, .navbar a, .navbar .nav-link, .navbar .dropdown-item { color: var(--amsp-cream) !important }
+
+.btn-primary, .btn-primary:focus, .btn-primary.active {
+  background: linear-gradient(90deg,var(--amsp-teal), var(--amsp-mauve)) !important;
+  border-color: transparent !important;
+  color: var(--amsp-cream) !important;
+}
+.btn-outline-primary { border-color: rgba(255,255,255,0.06) !important; color: var(--amsp-cream) !important }
+
+.bg-info, .badge.bg-info, .card.bg-info { background: linear-gradient(90deg,#2e7a7a,#175d5d) !important; color: var(--amsp-cream) !important }
+
+.text-primary { color: var(--amsp-teal) !important }
+
+h1, h2, h3, h4, h5, h6 { color: var(--amsp-text) !important }
+
+.card-hero .btn-primary, .hero-card .btn-primary { background: linear-gradient(90deg,var(--amsp-teal),var(--amsp-mauve)) !important }
+
+.card.bg-primary, .card.text-white { background: linear-gradient(180deg,var(--amsp-deep), rgba(111,179,184,0.05)) !important; color: var(--amsp-cream) !important }
+
+/*
+  Keep visual/theme overrides here. Development-only compacting/diagnostic
+  overrides are intentionally scoped under `html.dev-compact` so they don't
+  affect production or confuse other developers. To enable compact mode in
+  your browser, add the class `dev-compact` to the <html> element (e.g.
+  <html class="dev-compact">) while developing.
+*/
+
+/* The layout's authoritative body padding is set in layout.css. Leave
+   small defensive rules here but avoid setting body padding unscoped. */
+
+.card-hero{padding-top:1.25rem;padding-bottom:1.25rem}
+.card-hero, .hero-card { margin-top: 0 !important; }
+.badge { color: var(--amsp-deep) !important }
+.main-container { padding-top: 0 !important; }
+.main-content-with-sidebar, .main-content-full, main { scroll-padding-top: 56px !important; padding-top: 0 !important; margin-top: 0 !important; }
+.sidebar { top: 56px !important; }
+.page-title, .d-flex .h2, .page-title h1, .page-title h2 { margin-top: 0 !important; padding-top: 0 !important; }
+.hero-title, .hero-lead { color: var(--amsp-text) !important }
+.small-muted { color: var(--amsp-muted) !important; opacity: 0.95 !important }
+.container.main-container { padding-top: 0 !important; }
+
+/* Development-only compacting: wrap the rules by adding `dev-compact` to the html element */
+html.dev-compact .container, html.dev-compact .container-fluid, html.dev-compact .main-container, html.dev-compact .main-container > .container, html.dev-compact .main-content-with-sidebar, html.dev-compact .main-content-full {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+html.dev-compact .card-hero, html.dev-compact .hero-card {
+  margin-top: 0 !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* Compacting: smaller global spacing for dev */
+html.dev-compact h1,h2,h3,h4,h5,h6 { margin-top: 0 !important; margin-bottom: .25rem !important; padding:0 !important; }
+html.dev-compact .card { padding: .5rem !important; margin-bottom: .75rem !important; }
+html.dev-compact .card .card-body { padding: .5rem !important; }
+html.dev-compact .main-content-with-sidebar { padding: 0.25rem !important; min-height: auto !important; margin-top: 0 !important }
+html.dev-compact .main-content-full { padding: 0.25rem !important; min-height: auto !important; margin-top: 0 !important }
+html.dev-compact .sidebar { padding: .25rem !important; }
+html.dev-compact .hero-lead, html.dev-compact .small-muted { margin: .15rem 0 !important; }
+html.dev-compact .btn, html.dev-compact .btn-lg { padding: .4rem .6rem !important; font-size: .95rem !important }
