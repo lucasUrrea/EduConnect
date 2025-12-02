@@ -70,7 +70,7 @@ def create_users():
     logger.info("="*60)
     
     from django.contrib.auth.models import User
-    from EduConnectApp.models import Usuarios
+    from EduConnectApp.models import Usuarios, Estudiantes, Docentes
     from django.utils import timezone
     
     users_created = False
@@ -88,9 +88,10 @@ def create_users():
     
     # Create Student
     try:
-        if not Usuarios.objects.filter(email='student1@example.com').exists():
+        student_user_obj = Usuarios.objects.filter(email='student1@example.com').first()
+        if not student_user_obj:
             user = User.objects.create_user('student1@example.com', 'student1@example.com', 'studpass')
-            Usuarios.objects.create(
+            student_user_obj = Usuarios.objects.create(
                 email='student1@example.com',
                 nombre='Joseph',
                 apellido_paterno='Nohra',
@@ -103,18 +104,35 @@ def create_users():
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
-            logger.info("✅ Student user created: student1@example.com / studpass")
+            logger.info("✅ Student Usuarios created: student1@example.com / studpass")
             users_created = True
         else:
-            logger.info("✅ Student user already exists")
+            logger.info("✅ Student Usuarios already exists")
+        
+        # Create Estudiantes profile if not exists
+        if not Estudiantes.objects.filter(id_usuario=student_user_obj.id_usuario).exists():
+            Estudiantes.objects.create(
+                id_usuario=student_user_obj,
+                numero_matricula='STU0001',
+                carrera='Ingeniería Informática',
+                semestre=5,
+                fecha_ingreso=timezone.now().date(),
+                estado='activo',
+                created_at=timezone.now(),
+                updated_at=timezone.now()
+            )
+            logger.info("✅ Estudiantes profile created for student1")
+        else:
+            logger.info("✅ Estudiantes profile already exists for student1")
     except Exception as e:
         logger.warning(f"⚠️  Error creating student: {e}", exc_info=True)
     
     # Create Teacher
     try:
-        if not Usuarios.objects.filter(email='docente1@example.com').exists():
+        teacher_user_obj = Usuarios.objects.filter(email='docente1@example.com').first()
+        if not teacher_user_obj:
             user = User.objects.create_user('docente1@example.com', 'docente1@example.com', 'docpass')
-            Usuarios.objects.create(
+            teacher_user_obj = Usuarios.objects.create(
                 email='docente1@example.com',
                 nombre='Sebastian',
                 apellido_paterno='Pizarro',
@@ -127,10 +145,25 @@ def create_users():
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
-            logger.info("✅ Teacher user created: docente1@example.com / docpass")
+            logger.info("✅ Teacher Usuarios created: docente1@example.com / docpass")
             users_created = True
         else:
-            logger.info("✅ Teacher user already exists")
+            logger.info("✅ Teacher Usuarios already exists")
+        
+        # Create Docentes profile if not exists
+        if not Docentes.objects.filter(id_usuario=teacher_user_obj.id_usuario).exists():
+            Docentes.objects.create(
+                id_usuario=teacher_user_obj,
+                codigo_docente='DOC001',
+                departamento='Departamento de Informática',
+                titulo_academico='Magister en Ingeniería',
+                estado='activo',
+                created_at=timezone.now(),
+                updated_at=timezone.now()
+            )
+            logger.info("✅ Docentes profile created for docente1")
+        else:
+            logger.info("✅ Docentes profile already exists for docente1")
     except Exception as e:
         logger.warning(f"⚠️  Error creating teacher: {e}", exc_info=True)
     
