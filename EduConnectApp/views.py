@@ -229,6 +229,12 @@ def dashboard_estudiante(request):
     except Exception:
         pass
     
+    # Obtener todas las asignaturas disponibles
+    asignaturas = Asignaturas.objects.filter(estado='activo').order_by('nombre_asignatura')
+    
+    # Obtener todas las categorías disponibles
+    categorias = CategoriasTemas.objects.select_related('id_asignatura').order_by('id_asignatura__nombre_asignatura', 'nombre_categoria')
+    
     # Estadísticas
     total_consultas = Consultas.objects.filter(id_estudiante=estudiante.id_estudiante).count()
     consultas_pendientes = Consultas.objects.filter(
@@ -246,6 +252,8 @@ def dashboard_estudiante(request):
         'total_consultas': total_consultas,
         'consultas_pendientes': consultas_pendientes,
         'consultas_respondidas': consultas_respondidas,
+        'asignaturas': asignaturas,
+        'categorias': categorias,
     }
     
     return render(request, 'EduConnectApp/dashboard_estudiante.html', context)
@@ -361,11 +369,8 @@ def dashboard_docente(request):
         id_docente=docente.id_docente
     ).select_related('id_asignatura')
     
-    asignatura_ids = [da.id_asignatura.id_asignatura for da in asignaturas_docente]
-    
-    # Consultas pendientes en las asignaturas del docente
+    # Mostrar TODAS las consultas (no solo las de las asignaturas del docente)
     consultas_pendientes = Consultas.objects.filter(
-        id_asignatura__in=asignatura_ids,
         estado='pendiente'
     ).select_related('id_estudiante__id_usuario', 'id_asignatura').order_by('-fecha_consulta')
     
