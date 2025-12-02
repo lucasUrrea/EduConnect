@@ -723,3 +723,29 @@ def debug_css_report(request):
     except Exception as e:
         return JsonResponse({'ok': False, 'error': f'write failed: {e}'}, status=500)
     return JsonResponse({'ok': True})
+
+
+@csrf_exempt
+def translate_text(request):
+    """
+    Vista para traducir texto usando la biblioteca 'translators'.
+    Recibe un POST con {'text': 'texto a traducir'}.
+    Devuelve un JSON con {'translation': 'texto traducido'}.
+    """
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            text_to_translate = data.get('text', '')
+            if not text_to_translate:
+                return JsonResponse({'error': 'No text provided'}, status=400)
+
+            # Usar la biblioteca de traducción
+            import translators as ts
+            translated_text = ts.translate_text(text_to_translate, to_language='es')
+            
+            return JsonResponse({'translation': translated_text})
+        except Exception as e:
+            logger.error(f"Translation error: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Only POST method is allowed'}, status=405)

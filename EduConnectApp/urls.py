@@ -27,6 +27,10 @@ urlpatterns = [
     path('mis-consultas/', views.mis_consultas, name='mis_consultas'),
     path('mi-progreso/', views.mi_progreso, name='mi_progreso'),
     path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+    
+    # Translation endpoint
+    path('translate/', views.translate_text, name='translate_text'),
+
     # Temporary debug endpoint to receive computed styles from client for diagnostics
     path('debug/_css_report/', views.debug_css_report, name='debug_css_report'),
 ]
