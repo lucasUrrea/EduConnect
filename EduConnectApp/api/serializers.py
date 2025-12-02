@@ -150,20 +150,13 @@ class AsignaturasSerializer(serializers.ModelSerializer):
         model = Asignaturas
         fields = [
             'id_asignatura', 'codigo_asignatura', 'nombre_asignatura',
-            'descripcion', 'creditos', 'nivel', 'departamento',
-            'carrera_asociada', 'semestre_sugerido', 'estado'
+            'descripcion', 'estado'
         ]
         read_only_fields = ['id_asignatura', 'created_at', 'updated_at']
         extra_kwargs = {
             'codigo_asignatura': {'required': True},
             'nombre_asignatura': {'required': True},
         }
-    
-    def validate_creditos(self, value):
-        """Valida que los créditos sean válidos"""
-        if value and (value < 1 or value > 10):
-            raise serializers.ValidationError("Los créditos deben estar entre 1 y 10")
-        return value
 
 
 class CategoriasSerializer(serializers.ModelSerializer):
@@ -172,8 +165,8 @@ class CategoriasSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoriasTemas
         fields = [
-            'id_categoria', 'nombre_categoria', 'descripcion',
-            'icono', 'color', 'orden', 'estado'
+            'id_categoria', 'id_asignatura', 'nombre_categoria', 'descripcion',
+            'icono', 'color_hex', 'orden_visualizacion', 'estado'
         ]
         read_only_fields = ['id_categoria', 'created_at', 'updated_at']
         extra_kwargs = {
@@ -243,7 +236,7 @@ class ConsultasSerializer(serializers.ModelSerializer):
         fields = [
             'id_consulta', 'titulo', 'descripcion', 'prioridad', 'estado',
             'fecha_consulta', 'fecha_limite_respuesta',
-            'adjunto_archivo', 'tipo_consulta', 'tags',
+            'adjunto_archivo', 'tipo_consulta', 'tags', 'es_anonima',
             'estudiante', 'asignatura', 'categoria',
             'estudiante_id', 'asignatura_id', 'categoria_id',
             'created_at', 'updated_at'
@@ -273,17 +266,6 @@ class ConsultasSerializer(serializers.ModelSerializer):
                 f"Estado inválido. Debe ser uno de: {', '.join(estados_validos)}"
             )
         return value
-    
-    def validate(self, attrs):
-        """Validaciones a nivel de objeto"""
-        # Validar fecha límite
-        fecha_limite = attrs.get('fecha_limite_respuesta')
-        if fecha_limite and fecha_limite < timezone.now():
-            raise serializers.ValidationError({
-                'fecha_limite_respuesta': 'La fecha límite no puede ser en el pasado'
-            })
-        
-        return attrs
 
 
 # ==============================================================================
