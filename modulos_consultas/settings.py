@@ -156,15 +156,9 @@ WSGI_APPLICATION = 'modulos_consultas.wsgi.application'
 USE_SQLITE = config('USE_SQLITE', default='0') == '1'
 DATABASE_URL = config('DATABASE_URL', default='')
 
-if USE_SQLITE:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-elif DATABASE_URL:
-    # Para Render PostgreSQL o compatible
+# Priority: DATABASE_URL > USE_SQLITE > Environment variables > Default MySQL
+if DATABASE_URL:
+    # Para Render PostgreSQL o compatible - PRIORIDAD 1
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.config(
@@ -173,14 +167,22 @@ elif DATABASE_URL:
             conn_health_checks=True,
         )
     }
+elif USE_SQLITE:
+    # SQLite para desarrollo local - PRIORIDAD 2
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 else:
-    # Read DB credentials from environment variables for safety and flexibility.
-    DB_ENGINE = config('DB_ENGINE', default='django.db.backends.mysql')
-    DB_NAME = config('DB_NAME', default='bdxd')
-    DB_USER = config('DB_USER', default='root')
-    DB_PASSWORD = config('DB_PASSWORD', default='admin')
+    # Read DB credentials from environment variables - PRIORIDAD 3
+    DB_ENGINE = config('DB_ENGINE', default='django.db.backends.postgresql')
+    DB_NAME = config('DB_NAME', default='educonnect')
+    DB_USER = config('DB_USER', default='educonnect_user')
+    DB_PASSWORD = config('DB_PASSWORD', default='')
     DB_HOST = config('DB_HOST', default='localhost')
-    DB_PORT = config('DB_PORT', default='3306')
+    DB_PORT = config('DB_PORT', default='5432')
 
     if 'postgresql' in DB_ENGINE or 'postgres' in DB_ENGINE:
         DATABASES = {
