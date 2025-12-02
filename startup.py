@@ -190,6 +190,7 @@ def create_sample_data():
     logger.info("="*60)
     
     from EduConnectApp.models import Asignaturas, CategoriasTemas
+    from django.utils import timezone
     
     # Sample asignaturas
     asignaturas_data = [
