@@ -183,6 +183,65 @@ def create_users():
     
     return users_created
 
+def create_sample_data():
+    """Create sample asignaturas and categorias if they don't exist."""
+    logger.info("="*60)
+    logger.info("STEP 2B: Creating Sample Asignaturas and Categorías")
+    logger.info("="*60)
+    
+    from EduConnectApp.models import Asignaturas, CategoriasTemas
+    
+    # Sample asignaturas
+    asignaturas_data = [
+        {'codigo': 'CS101', 'nombre': 'Introducción a la Programación', 'carrera': 'Ingeniería Informática'},
+        {'codigo': 'CS102', 'nombre': 'Estructuras de Datos', 'carrera': 'Ingeniería Informática'},
+        {'codigo': 'CS103', 'nombre': 'Bases de Datos', 'carrera': 'Ingeniería Informática'},
+        {'codigo': 'CS104', 'nombre': 'Desarrollo Web', 'carrera': 'Ingeniería Informática'},
+        {'codigo': 'MATH101', 'nombre': 'Cálculo I', 'carrera': 'Ingeniería'},
+    ]
+    
+    created_asignaturas = []
+    for asig_data in asignaturas_data:
+        asignatura, created = Asignaturas.objects.get_or_create(
+            codigo_asignatura=asig_data['codigo'],
+            defaults={
+                'nombre_asignatura': asig_data['nombre'],
+                'carrera': asig_data['carrera'],
+                'estado': 'activo',
+                'created_at': timezone.now(),
+                'updated_at': timezone.now(),
+            }
+        )
+        if created:
+            logger.info(f"✅ Asignatura created: {asig_data['nombre']}")
+        else:
+            logger.info(f"✅ Asignatura already exists: {asig_data['nombre']}")
+        created_asignaturas.append(asignatura)
+    
+    # Sample categorias for each asignatura
+    categorias_data = {
+        'CS101': ['Conceptos Básicos', 'Sintaxis', 'Debugging', 'Ejercicios'],
+        'CS102': ['Arrays', 'Listas', 'Pilas', 'Colas', 'Árboles'],
+        'CS103': ['Modelado', 'SQL', 'Consultas', 'Integridad'],
+        'CS104': ['Frontend', 'Backend', 'Bases de Datos', 'Deploy'],
+        'MATH101': ['Límites', 'Derivadas', 'Integrales', 'Aplicaciones'],
+    }
+    
+    for asignatura in created_asignaturas:
+        categorias = categorias_data.get(asignatura.codigo_asignatura, ['General'])
+        for categoria_nombre in categorias:
+            categoria, created = CategoriasTemas.objects.get_or_create(
+                id_asignatura=asignatura,
+                nombre_categoria=categoria_nombre,
+                defaults={
+                    'estado': 'activo',
+                    'created_at': timezone.now(),
+                    'updated_at': timezone.now(),
+                }
+            )
+            if created:
+                logger.info(f"  ✅ Categoría created: {asignatura.nombre_asignatura} → {categoria_nombre}")
+
 def start_gunicorn():
     """Start Gunicorn server."""
     logger.info("="*60)
@@ -237,6 +296,9 @@ if __name__ == '__main__':
         
         logger.info("")
         create_users()
+        
+        logger.info("")
+        create_sample_data()
         
         logger.info("")
         start_gunicorn()
