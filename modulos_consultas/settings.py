@@ -156,10 +156,22 @@ WSGI_APPLICATION = 'modulos_consultas.wsgi.application'
 USE_SQLITE = config('USE_SQLITE', default='0') == '1'
 DATABASE_URL = config('DATABASE_URL', default='')
 
+# Debug logging
+import sys
+print(f"\n{'='*60}", file=sys.stderr)
+print(f"DATABASE CONFIGURATION DEBUG", file=sys.stderr)
+print(f"{'='*60}", file=sys.stderr)
+print(f"DATABASE_URL present: {bool(DATABASE_URL)}", file=sys.stderr)
+print(f"DATABASE_URL value: {DATABASE_URL[:50] + '...' if DATABASE_URL and len(DATABASE_URL) > 50 else DATABASE_URL}", file=sys.stderr)
+print(f"USE_SQLITE: {USE_SQLITE}", file=sys.stderr)
+print(f"DEBUG mode: {DEBUG}", file=sys.stderr)
+print(f"{'='*60}\n", file=sys.stderr)
+
 # Priority: DATABASE_URL > USE_SQLITE > Environment variables > Default MySQL
 if DATABASE_URL:
     # Para Render PostgreSQL o compatible - PRIORIDAD 1
     import dj_database_url
+    print(f"Using: DATABASE_URL (Render PostgreSQL)", file=sys.stderr)
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
@@ -169,6 +181,7 @@ if DATABASE_URL:
     }
 elif USE_SQLITE:
     # SQLite para desarrollo local - PRIORIDAD 2
+    print(f"Using: SQLite (Local Development)", file=sys.stderr)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -183,6 +196,8 @@ else:
     DB_PASSWORD = config('DB_PASSWORD', default='')
     DB_HOST = config('DB_HOST', default='localhost')
     DB_PORT = config('DB_PORT', default='5432')
+
+    print(f"Using: Environment variables (DB_HOST={DB_HOST}, DB_PORT={DB_PORT})", file=sys.stderr)
 
     if 'postgresql' in DB_ENGINE or 'postgres' in DB_ENGINE:
         DATABASES = {
@@ -212,6 +227,9 @@ else:
                 },
             }
         }
+
+print(f"Database configured: {DATABASES['default']['ENGINE']}", file=sys.stderr)
+print(f"{'='*60}\n", file=sys.stderr)
 
 
 # Password validation
