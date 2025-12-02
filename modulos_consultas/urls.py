@@ -27,6 +27,8 @@ urlpatterns = [
     path('', include('EduConnectApp.urls')),
     # DRF token auth endpoint
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    # API endpoints
+    path('api/', include('EduConnectApp.api.urls')),
     # API Schema and Documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
