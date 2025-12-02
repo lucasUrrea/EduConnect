@@ -8,6 +8,7 @@ import sys
 import subprocess
 import django
 import logging
+import time
 
 # Setup logging to see output in Render logs
 logging.basicConfig(
@@ -21,7 +22,32 @@ logger = logging.getLogger(__name__)
 
 # Setup Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'modulos_consultas.settings')
+
+# Check for DATABASE_URL
+if not os.environ.get('DATABASE_URL'):
+    logger.warning("⚠️  DATABASE_URL not set, waiting for Render to configure it...")
+    time.sleep(2)
+
 django.setup()
+
+def wait_for_db(max_attempts=30):
+    """Wait for database to be available."""
+    from django.db import connection
+    from django.db.utils import OperationalError
+    
+    for attempt in range(max_attempts):
+        try:
+            connection.ensure_connection()
+            logger.info("✅ Database connection successful")
+            return True
+        except OperationalError as e:
+            if attempt < max_attempts - 1:
+                logger.info(f"⏳ Database not ready, attempt {attempt + 1}/{max_attempts}, retrying in 2 seconds...")
+                time.sleep(2)
+            else:
+                logger.error(f"❌ Database connection failed after {max_attempts} attempts: {e}")
+                return False
+    return False
 
 def run_migrations():
     """Execute database migrations."""
@@ -151,6 +177,13 @@ if __name__ == '__main__':
         logger.info("╚" + "="*58 + "╝")
         logger.info("")
         
+        # Wait for database
+        logger.info("Waiting for database connection...")
+        if not wait_for_db():
+            logger.warning("⚠️  Database connection failed, but continuing with migrations anyway...")
+        
+        logger.info("")
+        
         # Run all steps
         if not run_migrations():
             logger.warning("⚠️  Warning: Migrations had issues, continuing anyway...")
@@ -163,4 +196,5 @@ if __name__ == '__main__':
     except Exception as e:
         logger.error(f"❌ Fatal error: {e}", exc_info=True)
         sys.exit(1)
+
 
