@@ -90,7 +90,15 @@ def create_users():
     try:
         student_user_obj = Usuarios.objects.filter(email='student1@example.com').first()
         if not student_user_obj:
-            user = User.objects.create_user('student1@example.com', 'student1@example.com', 'studpass')
+            # Get or create Django User first
+            django_user, created = User.objects.get_or_create(
+                username='student1@example.com',
+                defaults={'email': 'student1@example.com'}
+            )
+            if created:
+                django_user.set_password('studpass')
+                django_user.save()
+            
             student_user_obj = Usuarios.objects.create(
                 email='student1@example.com',
                 nombre='Joseph',
@@ -98,7 +106,7 @@ def create_users():
                 apellido_materno='',
                 tipo_usuario='estudiante',
                 estado='activo',
-                password_hash=user.password,
+                password_hash=django_user.password,
                 telefono='',
                 fecha_registro=timezone.now(),
                 created_at=timezone.now(),
@@ -117,7 +125,6 @@ def create_users():
                 carrera='Ingeniería Informática',
                 semestre=5,
                 fecha_ingreso=timezone.now().date(),
-                estado='activo',
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
@@ -131,7 +138,15 @@ def create_users():
     try:
         teacher_user_obj = Usuarios.objects.filter(email='docente1@example.com').first()
         if not teacher_user_obj:
-            user = User.objects.create_user('docente1@example.com', 'docente1@example.com', 'docpass')
+            # Get or create Django User first
+            django_user, created = User.objects.get_or_create(
+                username='docente1@example.com',
+                defaults={'email': 'docente1@example.com'}
+            )
+            if created:
+                django_user.set_password('docpass')
+                django_user.save()
+            
             teacher_user_obj = Usuarios.objects.create(
                 email='docente1@example.com',
                 nombre='Sebastian',
@@ -139,7 +154,7 @@ def create_users():
                 apellido_materno='',
                 tipo_usuario='docente',
                 estado='activo',
-                password_hash=user.password,
+                password_hash=django_user.password,
                 telefono='',
                 fecha_registro=timezone.now(),
                 created_at=timezone.now(),
@@ -157,7 +172,6 @@ def create_users():
                 codigo_docente='DOC001',
                 departamento='Departamento de Informática',
                 titulo_academico='Magister en Ingeniería',
-                estado='activo',
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
