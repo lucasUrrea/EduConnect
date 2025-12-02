@@ -474,8 +474,8 @@ def crear_consulta(request):
             messages.error(request, 'Por favor corrija los errores del formulario')
     
     # Obtener asignaturas y categorías para el formulario
-    asignaturas = Asignaturas.objects.filter(estado='activa')
-    categorias = CategoriasTemas.objects.filter(estado='activa')
+    asignaturas = Asignaturas.objects.filter(estado='activo')
+    categorias = CategoriasTemas.objects.filter(estado='activo')
     form = ConsultaForm()
     
     context = {
