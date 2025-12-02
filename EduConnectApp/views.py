@@ -741,7 +741,7 @@ def translate_text(request):
 
             # Usar la biblioteca de traducción
             import translators as ts
-            translated_text = ts.translate_text(text_to_translate, to_language='es')
+            translated_text = ts.translate_text(text_to_translate, translator='bing', to_language='es')
             
             return JsonResponse({'translation': translated_text})
         except Exception as e:
