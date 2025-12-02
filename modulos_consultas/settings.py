@@ -37,7 +37,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*,localhost,127.0.0.1', cast=Cs
 # CSRF Trusted Origins - Permite solicitudes CSRF desde estos orígenes
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
-    default='http://localhost:8000,http://127.0.0.1:8000',
+    default='http://localhost:8000,http://127.0.0.1:8000,https://educonnect-lybu.onrender.com',
     cast=Csv()
 )
 
@@ -45,8 +45,8 @@ CSRF_TRUSTED_ORIGINS = config(
 # En desarrollo (DEBUG=True) estas configuraciones son más permisivas
 if not DEBUG:
     CSRF_COOKIE_SECURE = True  # Solo enviar cookie CSRF via HTTPS
-    CSRF_COOKIE_HTTPONLY = True  # Prevenir acceso JavaScript a cookie CSRF
-    CSRF_COOKIE_SAMESITE = 'Strict'  # Protección contra ataques CSRF cross-site
+    CSRF_COOKIE_HTTPONLY = False  # Permitir acceso en formularios
+    CSRF_COOKIE_SAMESITE = 'Lax'  # Lax en lugar de Strict para evitar problemas cross-site
     SECURE_SSL_REDIRECT = True  # Redirigir todo a HTTPS
 else:
     CSRF_COOKIE_SECURE = False  # Permitir HTTP en desarrollo
