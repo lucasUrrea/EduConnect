@@ -27,8 +27,9 @@ urlpatterns = [
     path('', include('EduConnectApp.urls')),
     # DRF token auth endpoint
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    # API Schema and Documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     # Favicon redirect to avoid 404 errors
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
 ]
