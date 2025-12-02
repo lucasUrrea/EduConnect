@@ -99,9 +99,9 @@ def create_users():
                 estado='activo',
                 password_hash=user.password,
                 telefono='',
-                direccion='',
-                fecha_creacion=timezone.now(),
-                fecha_actualizacion=timezone.now()
+                fecha_registro=timezone.now(),
+                created_at=timezone.now(),
+                updated_at=timezone.now()
             )
             logger.info("✅ Student user created: student1@example.com / studpass")
             users_created = True
@@ -123,9 +123,9 @@ def create_users():
                 estado='activo',
                 password_hash=user.password,
                 telefono='',
-                direccion='',
-                fecha_creacion=timezone.now(),
-                fecha_actualizacion=timezone.now()
+                fecha_registro=timezone.now(),
+                created_at=timezone.now(),
+                updated_at=timezone.now()
             )
             logger.info("✅ Teacher user created: docente1@example.com / docpass")
             users_created = True
